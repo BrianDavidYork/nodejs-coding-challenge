@@ -13,7 +13,7 @@ app.use(bp.urlencoded({ extended: true }));
 // endpoints
 app.get('/api/users', controller.getUsers);
 app.post('/api/users', controller.createUser);
-app.put('/api/users', controller.updateUser);
-app.delete('/api/users', controller.deleteUser);
+app.put('/api/users/:email', controller.updateUser);
+app.delete('/api/users/:email', controller.deleteUser);
 
 module.exports = app;

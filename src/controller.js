@@ -11,6 +11,11 @@ exports.createUser = (req, res) => {
   return res.status(200).send({"message": repoResponse, data: null});
 };
 
-exports.updateUser = (req, res) => {};
+exports.updateUser = (req, res) => {
+  const email = req.params.email;
+  const updatedUserInfo = req.body;
+  const repoResponse = repo.updateUser(email, updatedUserInfo);
+  return res.status(200).send({"message": repoResponse, data: null});
+};
 
 exports.deleteUser = (req, res) => {};
