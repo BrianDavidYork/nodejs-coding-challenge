@@ -8,5 +8,8 @@
     "start": "node ./src/index.js"
   },
   "author": "Cody Mercer <cmercer@mrpfd.com>",
-  "license": "UNLICENSED"
+  "license": "UNLICENSED",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
