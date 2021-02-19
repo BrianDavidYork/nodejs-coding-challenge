@@ -17,3 +17,12 @@ exports.updateUser = (email, newInfo) => {
     return "User updated!"
   }
 };
+
+exports.deleteUser = (email) => {
+  const n = users.findIndex((user) => user.email === email);
+
+  if (n !== -1) {
+    users.splice(n, 1);
+    return "User deleted!"
+  }
+};

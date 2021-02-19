@@ -18,4 +18,8 @@ exports.updateUser = (req, res) => {
   return res.status(200).send({"message": repoResponse, data: null});
 };
 
-exports.deleteUser = (req, res) => {};
+exports.deleteUser = (req, res) => {
+  const email = req.params.email;
+  const repoResponse = repo.deleteUser(email);
+  return res.status(200).send({"message": repoResponse, data: null});
+};
