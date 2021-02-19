@@ -1,6 +1,9 @@
-const users = require('./../data/users.json');
+const repo = require('./repository');
 
-exports.getUsers = (req, res) => {};
+exports.getUsers = (req, res) => {
+  const users = repo.getUsers();
+  return res.status(200).send({"data": users});
+};
 
 exports.createUser = (req, res) => {};
 
