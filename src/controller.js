@@ -37,6 +37,12 @@ exports.getUsers = (req, res) => {
 
 exports.createUser = (req, res) => {
   const newUser = req.body;
+
+  // request validation
+  if (!(newUser.email && newUser.name && newUser.dateOfBirth && newUser.phoneNumber && newUser.address)) {
+    return res.status(200).send({"message": "New users must have email, name, dateOfBirth, phoneNumber, and address","data": null});
+  }
+
   const repoResponse = repo.createUser(newUser);
   return res.status(200).send({"message": repoResponse, data: null});
 };
