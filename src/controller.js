@@ -28,7 +28,7 @@ exports.getUsers = (req, res) => {
   // pagination
   const page = req.query.page;
   const limit = req.query.limit;
-  if (page !== undefined) {
+  if (page !== undefined && limit !== undefined) {
     users = users.slice((page * limit) - limit, page * limit)
   }
 
