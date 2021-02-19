@@ -1,4 +1,5 @@
 const users = require('./../data/users.json');
+const fs = require('fs');
 
 exports.getUsers = () => {
   return users;
@@ -6,6 +7,7 @@ exports.getUsers = () => {
 
 exports.createUser = (newUser) => {
   users.push(newUser);
+  saveToDisk();
   return "New user created!"
 };
 
@@ -20,6 +22,7 @@ exports.updateUser = (email, newInfo) => {
 
   if (n !== -1) {
     users[n] = newInfo;
+    saveToDisk();
     return "User updated!"
   }
 };
@@ -29,6 +32,13 @@ exports.deleteUser = (email) => {
 
   if (n !== -1) {
     users.splice(n, 1);
+    saveToDisk();
     return "User deleted!"
   }
+};
+
+const saveToDisk = () => {
+  fs.writeFile('./data/users.json', JSON.stringify(users), 'utf-8', function(err) {
+    if (err) throw err;
+  })
 };
