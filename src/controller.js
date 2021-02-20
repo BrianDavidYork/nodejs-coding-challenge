@@ -9,31 +9,31 @@ exports.getUsers = (req, res) => {
   if (search !== undefined) {
     const searchResults = users.find(u => u.email.toLowerCase() === search.email.toLowerCase());
     if (searchResults !== undefined) {
-      return res.status(repoResults.status).send({message: "1 user returned",data: [searchResults]});
+      return res.status(repoResults.status).send({message: "1 user returned", data: [searchResults]});
     } else {
-      return res.status(repoResults.status).send({message: "0 users returned",data: []});
+      return res.status(repoResults.status).send({message: "0 users returned", data: []});
     }
   }
 
-  // sort
+  // sort -- sortBy and sortDirections required to take effect
   const sortBy = req.query.sortBy;
   const sortDirection = req.query.sortDirection;
-  if (sortBy !== undefined) {
+  if (sortBy !== undefined && sortDirection !== undefined) {
     if (sortDirection === "descending") {
       users.sort((a, b) => (a[sortBy] < b[sortBy]) ? 1 : -1);
-    } else {
+    } else if (sortDirection === "ascending") {
       users.sort((a, b) => (a[sortBy] > b[sortBy]) ? 1 : -1);
     }
   }
 
-  // pagination
+  // pagination -- page and limit required to take effect
   const page = req.query.page;
   const limit = req.query.limit;
   if (page !== undefined && limit !== undefined) {
     users = users.slice((page * limit) - limit, page * limit);
   }
 
-  return res.status(repoResults.status).send({message: users.length + " users returned",data: users});
+  return res.status(repoResults.status).send({message: users.length + " users returned", data: users});
 };
 
 exports.createUser = (req, res) => {
