@@ -22,38 +22,40 @@ exports.updateUser = (email, newInfo) => {
   }
   const n = users.findIndex((user) => user.email.toLowerCase() === email.toLowerCase());
 
-  if (n !== -1) {
-    newInfo.email = newInfo.email !== undefined ? newInfo.email : users[n].email;
-    newInfo.name = newInfo.name !== undefined ? newInfo.name : users[n].name;
-    newInfo.dateOfBirth = newInfo.dateOfBirth !== undefined ? newInfo.dateOfBirth : users[n].dateOfBirth;
-    newInfo.phoneNumber = newInfo.phoneNumber !== undefined ? newInfo.phoneNumber : users[n].phoneNumber;
-    newInfo.address = newInfo.address !== undefined ? newInfo.address : users[n].address;
-
-    users[n] = newInfo;
-    let err = saveToDisk();
-    if (err) {
-      return {message: "Could not update user!", status: 500, data: null};
-    } else {
-      return {message: "User updated!", status: 200, data: null}
-    }
-  } else {
+  // no user found
+  if (n === -1) {
     return {message: "No user with that email!", status: 400, data: null}
+  }
+
+  newInfo.email = newInfo.email !== undefined ? newInfo.email : users[n].email;
+  newInfo.name = newInfo.name !== undefined ? newInfo.name : users[n].name;
+  newInfo.dateOfBirth = newInfo.dateOfBirth !== undefined ? newInfo.dateOfBirth : users[n].dateOfBirth;
+  newInfo.phoneNumber = newInfo.phoneNumber !== undefined ? newInfo.phoneNumber : users[n].phoneNumber;
+  newInfo.address = newInfo.address !== undefined ? newInfo.address : users[n].address;
+
+  users[n] = newInfo;
+  let err = saveToDisk();
+  if (err) {
+    return {message: "Could not update user!", status: 500, data: null};
+  } else {
+    return {message: "User updated!", status: 200, data: null}
   }
 };
 
 exports.deleteUser = (email) => {
   const n = users.findIndex((user) => user.email.toLowerCase() === email.toLowerCase());
 
-  if (n !== -1) {
-    users.splice(n, 1);
-    let err = saveToDisk();
-    if (err) {
-      return {message: "Could not delete user!", status: 500, data: null};
-    } else {
-      return {message: "User deleted!", status: 200, data: null}
-    }
-  } else {
+  // no user found
+  if (n === -1) {
     return {message: "No user with that email!", status: 400, data: null}
+  }
+
+  users.splice(n, 1);
+  let err = saveToDisk();
+  if (err) {
+    return {message: "Could not delete user!", status: 500, data: null};
+  } else {
+    return {message: "User deleted!", status: 200, data: null}
   }
 };
 
