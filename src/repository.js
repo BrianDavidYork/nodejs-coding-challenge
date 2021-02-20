@@ -38,7 +38,7 @@ exports.updateUser = (email, newInfo) => {
   if (err) {
     return {message: "Could not update user!", status: 500, data: null};
   } else {
-    return {message: "User updated!", status: 200, data: null}
+    return {message: "User updated!", status: 200, data: null};
   }
 };
 
@@ -47,7 +47,7 @@ exports.deleteUser = (email) => {
 
   // no user found
   if (n === -1) {
-    return {message: "No user with that email!", status: 400, data: null}
+    return {message: "No user with that email!", status: 400, data: null};
   }
 
   users.splice(n, 1);
@@ -55,7 +55,7 @@ exports.deleteUser = (email) => {
   if (err) {
     return {message: "Could not delete user!", status: 500, data: null};
   } else {
-    return {message: "User deleted!", status: 200, data: null}
+    return {message: "User deleted!", status: 200, data: null};
   }
 };
 

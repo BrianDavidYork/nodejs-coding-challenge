@@ -30,7 +30,7 @@ exports.getUsers = (req, res) => {
   const page = req.query.page;
   const limit = req.query.limit;
   if (page !== undefined && limit !== undefined) {
-    users = users.slice((page * limit) - limit, page * limit)
+    users = users.slice((page * limit) - limit, page * limit);
   }
 
   return res.status(repoResults.status).send({message: users.length + " users returned",data: users});
