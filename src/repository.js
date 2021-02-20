@@ -2,14 +2,18 @@ const users = require('./../data/users.json');
 const fs = require('fs');
 
 exports.getUsers = () => {
-  return users;
+  return {message: null, status: 200, data: users};
 };
 
 exports.createUser = (newUser) => {
   uniqueEmailCheck(newUser.email);
   users.push(newUser);
-  saveToDisk();
-  return "New user created!"
+  let err = saveToDisk();
+  if (err) {
+    return {message: "Could not create user!", status: 500, data: null};
+  } else {
+    return {message: "New user created!", status: 200, data: null};
+  }
 };
 
 exports.updateUser = (email, newInfo) => {
@@ -26,10 +30,14 @@ exports.updateUser = (email, newInfo) => {
     newInfo.address = newInfo.address !== undefined ? newInfo.address : users[n].address;
 
     users[n] = newInfo;
-    saveToDisk();
-    return "User updated!"
+    let err = saveToDisk();
+    if (err) {
+      return {message: "Could not update user!", status: 500, data: null};
+    } else {
+      return {message: "User updated!", status: 200, data: null}
+    }
   } else {
-    return "No user with that email!"
+    return {message: "No user with that email!", status: 400, data: null}
   }
 };
 
@@ -38,16 +46,20 @@ exports.deleteUser = (email) => {
 
   if (n !== -1) {
     users.splice(n, 1);
-    saveToDisk();
-    return "User deleted!"
+    let err = saveToDisk();
+    if (err) {
+      return {message: "Could not delete user!", status: 500, data: null};
+    } else {
+      return {message: "User deleted!", status: 200, data: null}
+    }
   } else {
-    return "No user with that email!"
+    return {message: "No user with that email!", status: 400, data: null}
   }
 };
 
 const saveToDisk = () => {
   fs.writeFile('./data/users.json', JSON.stringify(users), 'utf-8', function(err) {
-    if (err) throw err;
+    if (err) return err;
   })
 };
 
@@ -55,6 +67,6 @@ const uniqueEmailCheck = (newEmail) => {
   const n = users.findIndex((user) => user.email.toLowerCase() === newEmail.toLowerCase());
 
   if (n !== -1) {
-    return "User already exists with that email!"
+    return {message: "User already exists with that email!", status: 400, data: null};
   }
 };

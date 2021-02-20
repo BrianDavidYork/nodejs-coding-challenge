@@ -1,16 +1,17 @@
 const repo = require('./repository');
 
 exports.getUsers = (req, res) => {
-  let users = repo.getUsers();
+  const repoResults = repo.getUsers();
+  let users = repoResults.data;
 
   // search
   const search = req.query.match;
   if (search !== undefined) {
     const searchResults = users.find(u => u.email.toLowerCase() === search.email.toLowerCase());
     if (searchResults !== undefined) {
-      return res.status(200).send({"message": "1 user returned","data": [searchResults]});
+      return res.status(repoResults.status).send({message: "1 user returned",data: [searchResults]});
     } else {
-      return res.status(200).send({"message": "0 users returned","data": []});
+      return res.status(repoResults.status).send({message: "0 users returned",data: []});
     }
   }
 
@@ -32,7 +33,7 @@ exports.getUsers = (req, res) => {
     users = users.slice((page * limit) - limit, page * limit)
   }
 
-  return res.status(200).send({"message": users.length + " users returned","data": users});
+  return res.status(repoResults.status).send({message: users.length + " users returned",data: users});
 };
 
 exports.createUser = (req, res) => {
@@ -40,11 +41,11 @@ exports.createUser = (req, res) => {
 
   // request validation
   if (!(newUser.email && newUser.name && newUser.dateOfBirth && newUser.phoneNumber && newUser.address)) {
-    return res.status(200).send({"message": "New users must have email, name, dateOfBirth, phoneNumber, and address","data": null});
+    return res.status(400).send({message: "New users must have email, name, dateOfBirth, phoneNumber, and address",data: null});
   }
 
   const repoResponse = repo.createUser(newUser);
-  return res.status(200).send({"message": repoResponse, data: null});
+  return res.status(repoResponse.status).send({message: repoResponse.message, data: repoResponse.data});
 };
 
 exports.updateUser = (req, res) => {
@@ -52,11 +53,11 @@ exports.updateUser = (req, res) => {
   const updatedUserInfo = req.body;
 
   const repoResponse = repo.updateUser(email, updatedUserInfo);
-  return res.status(200).send({"message": repoResponse, data: null});
+  return res.status(repoResponse.status).send({message: repoResponse.message, data: repoResponse.data});
 };
 
 exports.deleteUser = (req, res) => {
   const email = req.params.email;
   const repoResponse = repo.deleteUser(email);
-  return res.status(200).send({"message": repoResponse, data: null});
+  return res.status(repoResponse.status).send({message: repoResponse.message, data: repoResponse.data});
 };
