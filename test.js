@@ -105,10 +105,21 @@ describe("API tests", () => {
       });
   });
 
+  it("GET success DELETEd user", (done) => {
+    chai
+      .request(app)
+      .get('/api/users/?match[email]=brian@brian.com')
+      .end((err, res) => {
+        assert.equal(res.statusCode, 200);
+        assert.equal(res.body.message, "0 users returned");
+        done()
+      });
+  });
+
   it("DELETE failure", (done) => {
     chai
       .request(app)
-      .delete('/api/users/brian@brian.comgfu8f9dagfa79ga7g8f9agfg8f9sd')
+      .delete('/api/users/brian@brian.com')
       .end((err, res) => {
         assert.equal(res.statusCode, 400);
         assert.equal(res.body.message, "No user with that email!");
