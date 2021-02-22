@@ -93,4 +93,26 @@ describe("API tests", () => {
         done()
       });
   });
+
+  it("DELETE success", (done) => {
+    chai
+      .request(app)
+      .delete('/api/users/brian@brian.com')
+      .end((err, res) => {
+        assert.equal(res.statusCode, 200);
+        assert.equal(res.body.message, "User deleted!");
+        done()
+      });
+  });
+
+  it("DELETE failure", (done) => {
+    chai
+      .request(app)
+      .delete('/api/users/brian@brian.comgfu8f9dagfa79ga7g8f9agfg8f9sd')
+      .end((err, res) => {
+        assert.equal(res.statusCode, 400);
+        assert.equal(res.body.message, "No user with that email!");
+        done()
+      });
+  });
 });
