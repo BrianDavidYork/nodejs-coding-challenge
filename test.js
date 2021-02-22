@@ -1,11 +1,11 @@
-const chai = require("chai");
-const chaiHttp = require("chai-http");
+const chai = require('chai');
+const chaiHttp = require('chai-http');
 const { assert } = chai;
-const app = require("./src/index.js");
+const app = require('./src/index.js');
 chai.use(chaiHttp);
 
-describe("API tests", () => {
-  it("GET success", (done) => {
+describe('API tests', () => {
+  it('GET success', (done) => {
     chai
       .request(app)
       .get('/api/users')
@@ -17,7 +17,7 @@ describe("API tests", () => {
       });
   });
 
-  it("GET success sortby ascending", (done) => {
+  it('GET success sortby ascending', (done) => {
     chai
       .request(app)
       .get('/api/users?sortBy=email&sortDirection=ascending')
@@ -30,7 +30,7 @@ describe("API tests", () => {
       });
   });
 
-  it("GET success sortby descending", (done) => {
+  it('GET success sortby descending', (done) => {
     chai
       .request(app)
       .get('/api/users?sortBy=email&sortDirection=descending')
@@ -43,7 +43,7 @@ describe("API tests", () => {
       });
   });
 
-  it("GET success pagination", (done) => {
+  it('GET success pagination', (done) => {
     chai
       .request(app)
       .get('/api/users?page=1&limit=12')
@@ -56,7 +56,7 @@ describe("API tests", () => {
       });
   });
 
-  it("POST failure", (done) => {
+  it('POST failure', (done) => {
     chai
       .request(app)
       .post('/api/users')
@@ -68,7 +68,7 @@ describe("API tests", () => {
       });
   });
 
-  it("POST success", (done) => {
+  it('POST success', (done) => {
     chai
       .request(app)
       .post('/api/users')
@@ -76,12 +76,12 @@ describe("API tests", () => {
       .send({name: 'brian', email: 'brian@brian.com', dateOfBirth: 'yesterday', phoneNumber: 300, address: 'homeless'})
       .end((err, res) => {
         assert.equal(res.statusCode, 200);
-        assert.equal(res.body.message, "New user created!");
+        assert.equal(res.body.message, 'New user created!');
         done()
       });
   });
 
-  it("GET success POSTed user", (done) => {
+  it('GET success POSTed user', (done) => {
     chai
       .request(app)
       .get('/api/users?match[email]=brian@BRIAN.com')
@@ -94,7 +94,7 @@ describe("API tests", () => {
       });
   });
 
-  it("PUT success", (done) => {
+  it('PUT success', (done) => {
     chai
       .request(app)
       .put('/api/users/brian@brian.com')
@@ -102,12 +102,12 @@ describe("API tests", () => {
       .send({name: 'updated', address: 'New York'})
       .end((err, res) => {
         assert.equal(res.statusCode, 200);
-        assert.equal(res.body.message, "User updated!");
+        assert.equal(res.body.message, 'User updated!');
         done()
       });
   });
 
-  it("PUT failure", (done) => {
+  it('PUT failure', (done) => {
     chai
       .request(app)
       .put('/api/users/brian@brian.comgda78gfag6f7dagda9')
@@ -115,53 +115,53 @@ describe("API tests", () => {
       .send({name: 'updated', address: 'New York'})
       .end((err, res) => {
         assert.equal(res.statusCode, 400);
-        assert.equal(res.body.message, "No user with that email!");
+        assert.equal(res.body.message, 'No user with that email!');
         done()
       });
   });
 
-  it("GET success PUTed user", (done) => {
+  it('GET success PUTed user', (done) => {
     chai
       .request(app)
       .get('/api/users/?match[email]=brian@brian.com')
       .end((err, res) => {
         assert.equal(res.statusCode, 200);
-        assert.equal(res.body.message, "1 user returned");
+        assert.equal(res.body.message, '1 user returned');
         assert.equal(res.body.data[0].name, 'updated');
         assert.equal(res.body.data[0].address, 'New York');
         done()
       });
   });
 
-  it("DELETE success", (done) => {
+  it('DELETE success', (done) => {
     chai
       .request(app)
       .delete('/api/users/brian@brian.com')
       .end((err, res) => {
         assert.equal(res.statusCode, 200);
-        assert.equal(res.body.message, "User deleted!");
+        assert.equal(res.body.message, 'User deleted!');
         done()
       });
   });
 
-  it("GET success DELETEd user", (done) => {
+  it('GET success DELETEd user', (done) => {
     chai
       .request(app)
       .get('/api/users/?match[email]=brian@brian.com')
       .end((err, res) => {
         assert.equal(res.statusCode, 200);
-        assert.equal(res.body.message, "0 users returned");
+        assert.equal(res.body.message, '0 users returned');
         done()
       });
   });
 
-  it("DELETE failure", (done) => {
+  it('DELETE failure', (done) => {
     chai
       .request(app)
       .delete('/api/users/brian@brian.com')
       .end((err, res) => {
         assert.equal(res.statusCode, 400);
-        assert.equal(res.body.message, "No user with that email!");
+        assert.equal(res.body.message, 'No user with that email!');
         done()
       });
   });
