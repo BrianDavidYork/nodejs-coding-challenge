@@ -94,6 +94,45 @@ describe("API tests", () => {
       });
   });
 
+  it("PUT success", (done) => {
+    chai
+      .request(app)
+      .put('/api/users/brian@brian.com')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({name: 'updated', address: 'New York'})
+      .end((err, res) => {
+        assert.equal(res.statusCode, 200);
+        assert.equal(res.body.message, "User updated!");
+        done()
+      });
+  });
+
+  it("PUT failure", (done) => {
+    chai
+      .request(app)
+      .put('/api/users/brian@brian.comgda78gfag6f7dagda9')
+      .set('content-type', 'application/x-www-form-urlencoded')
+      .send({name: 'updated', address: 'New York'})
+      .end((err, res) => {
+        assert.equal(res.statusCode, 400);
+        assert.equal(res.body.message, "No user with that email!");
+        done()
+      });
+  });
+
+  it("GET success PUTed user", (done) => {
+    chai
+      .request(app)
+      .get('/api/users/?match[email]=brian@brian.com')
+      .end((err, res) => {
+        assert.equal(res.statusCode, 200);
+        assert.equal(res.body.message, "1 user returned");
+        assert.equal(res.body.data[0].name, 'updated');
+        assert.equal(res.body.data[0].address, 'New York');
+        done()
+      });
+  });
+
   it("DELETE success", (done) => {
     chai
       .request(app)
